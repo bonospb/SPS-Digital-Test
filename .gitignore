@@ -1,0 +1,65 @@
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Obj/
+UnityGenerated/
+Library/
+iOsBuild/
+AndroidBuild/
+Assets/UnityVS
+Assets/UnityVS*
+Assets/Editor/Test*
+Builds/*
+Bin/*
+Logs/*
+UserSettings/*
+debug.log
+debug.log.meta
+*EditorUserSettings.asset
+*AndroidLogcatSettings.asset
+*(Auto-Backup)*
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+*.svd
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+*.unityproj
+*.booproj
+*.DotSettings
+*.ide
+.idea
+JetBrains*
+.vs/*
+/Assets/UnityVS/
+/Assets/UnityVS.*
+UnityVS.joust.sln.DotSettings
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Thumbs.db.meta
+
+# ====== #
+# Other  #
+# ====== #
+*.pyc
+/Assets/StreamingAssets
+/Assets/StreamingAssets.meta
+/Assets/Resources/Cubemaps/GlobalReflection.cubemap*
+/Assets/Sprites/Mocaps/
+/Assets/Sprites/Mocaps.*
