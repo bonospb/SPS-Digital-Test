@@ -49,6 +49,9 @@ namespace FreeTeam.BP.Services.ObjectPool
 
         public void Warm(GameObject prefab, int size = 1)
         {
+            if (prefab == null)
+                return;
+
             if (prefabLookup.ContainsKey(prefab))
                 throw new System.Exception("Pool for prefab " + prefab.name + " has already been created");
 

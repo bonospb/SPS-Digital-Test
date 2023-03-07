@@ -1,12 +1,16 @@
 ﻿using FreeTeam.BP.Configuration;
 using FreeTeam.BP.Services.App;
 using FreeTeam.BP.Services.Canvas;
+using FreeTeam.BP.Services.Effects;
 using FreeTeam.BP.Services.ObjectPool;
 using FreeTeam.BP.Services.ObjectPool.Factories;
+using FreeTeam.BP.Services.Spawn;
 using FreeTeam.BP.UI;
 using FreeTeam.BP.UI.Dialogs;
 using FreeTeam.BP.UI.Screens;
 using FreeTeam.BP.UI.SplashScreens;
+using FreeTeam.BP.Views;
+using Leopotam.EcsLite;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Zenject;
@@ -23,10 +27,15 @@ namespace FreeTeam.BP.Installers
             BindConfig();
 
             BindObjectPoolService();
+            BindSpawnService();
+            BindEffectService();
             BindWorldSpaceCanvasService();
 
             BindUIControllerFactory();
             BindPoolableObjectFactory();
+            BindEntityViewFactory();
+
+            BindEcsWorld();
 
             BindInstallerInterfaces();
         }
@@ -76,6 +85,22 @@ namespace FreeTeam.BP.Installers
                 .AsSingle();
         }
 
+        private void BindSpawnService()
+        {
+            Container
+                .Bind<SpawnService>()
+                .AsSingle()
+                .NonLazy();
+        }
+
+        private void BindEffectService()
+        {
+            Container
+                .BindInterfacesAndSelfTo<EffectsService>()
+                .FromComponentInHierarchy()
+                .AsSingle();
+        }
+
         private void BindPoolableObjectFactory()
         {
             Container
@@ -89,6 +114,22 @@ namespace FreeTeam.BP.Installers
             Container
                 .Bind<WorldSpaceCanvasService>()
                 .FromComponentsInHierarchy()
+                .AsSingle();
+        }
+
+        private void BindEcsWorld()
+        {
+            Container
+                .Bind<EcsWorld>()
+                .AsSingle()
+                .NonLazy();
+        }
+
+        private void BindEntityViewFactory()
+        {
+            Container
+                .Bind<IEntityViewFactory>()
+                .To<EntityViewFactory>()
                 .AsSingle();
         }
 

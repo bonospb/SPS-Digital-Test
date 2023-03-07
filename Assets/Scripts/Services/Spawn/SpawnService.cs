@@ -1,47 +1,46 @@
 ﻿using FreeTeam.BP.Configuration;
-using FreeTeam.BP.Data;
 using FreeTeam.BP.Data.Constants;
 using FreeTeam.BP.ECS.Components;
 using FreeTeam.BP.Services.App;
 using FreeTeam.BP.Services.ObjectPool;
+using FreeTeam.BP.Utils;
 using FreeTeam.BP.Views;
 using Leopotam.EcsLite;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using Zenject;
 
 namespace FreeTeam.BP.Services.Spawn
 {
-    public class SpawnService : IInitializable
+    public class SpawnService
     {
         #region Public
         public bool IsInitialized { get; private set; } = false;
         #endregion
 
         #region Private
-        private ApplicationService _applicationService = null;
+        private Configurations _configurations = null;
         private PoolManager _poolManager = null;
         private IEntityViewFactory _entityViewFactory = null;
-
-        private Configurations _configurations => _applicationService.Configurations;
-        private LevelData _levelData => _applicationService.LevelData;
 
         private readonly Dictionary<string, GameObject> levelPrefabs = new Dictionary<string, GameObject>();
         #endregion
 
-        public SpawnService(ApplicationService applicationService, PoolManager poolManager, IEntityViewFactory entityViewFactory)
+        public SpawnService(
+            Configurations configurations,
+            PoolManager poolManager, 
+            IEntityViewFactory entityViewFactory)
         {
-            _applicationService = applicationService;
+            _configurations = configurations;
             _poolManager = poolManager;
             _entityViewFactory = entityViewFactory;
         }
 
         #region Implementation
-        public void Initialize() =>
-            InitRoutine();
+        public void Initialize(LevelConfig levelConfig) =>
+            PreloadPrefabs(levelConfig);
         #endregion
 
         #region Public methods
@@ -101,10 +100,13 @@ namespace FreeTeam.BP.Services.Spawn
                 }
             }
         }
+
+        public async Task WaitInit() =>
+            await TaskUtils.WaitUntil(() => IsInitialized);
         #endregion
 
-        #region Coroutines
-        private async void InitRoutine()
+        #region Private methods
+        private async void PreloadPrefabs(LevelConfig levelConfig)
         {
             var cameraPrefabPath = _configurations.GetConstantString(ConstantKeys.DEFAULT_CAMERA_PREFAB_PATH);
 
@@ -123,7 +125,7 @@ namespace FreeTeam.BP.Services.Spawn
                 playerPrefabPath
             };
 
-            var enemiesVehiclesIds = _levelData.LevelConfig.Enemies
+            var enemiesVehiclesIds = levelConfig.Enemies
                 .Select(x => x.Id);
             levelVehiclesIds.AddRange(enemiesVehiclesIds);
 
@@ -157,11 +159,6 @@ namespace FreeTeam.BP.Services.Spawn
             }
 
             IsInitialized = true;
-        }
-
-        public IEnumerator WaitInitializing()
-        {
-            yield return new WaitWhile(() => !IsInitialized);
         }
         #endregion
     }
