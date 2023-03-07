@@ -10,7 +10,7 @@ namespace FreeTeam.BP.ECS.Systems.FSM
         #region Private
         private EcsWorld world = default;
 
-        private DefaultSplashScreenController defaultSplashScreenController = default;
+        private LoadGameSplashScreenController loadGameSplashScreenController = default;
         #endregion
 
         public InitState(IStateMachine stateMachine, EcsWorld ecsWorld) : base(stateMachine) =>
@@ -35,14 +35,14 @@ namespace FreeTeam.BP.ECS.Systems.FSM
         #region Private methods
         private async void ConstructUI()
         {
-            defaultSplashScreenController = await SplashScreensManager.CreateSplashScreen<DefaultSplashScreenController>(SplashScreenNames.DEFAULT_SPLASH_SCREEN_NAME);
-            await defaultSplashScreenController.WaitShowing();
+            loadGameSplashScreenController = await SplashScreensManager.CreateSplashScreen<LoadGameSplashScreenController>(SplashScreenNames.LOAD_GAME_SPLASH_SCREEN_NAME);
+            await loadGameSplashScreenController.WaitShowing();
         }
 
         private async void DestructUI()
         {
-            defaultSplashScreenController.Close();
-            await defaultSplashScreenController.WaitHiding();
+            loadGameSplashScreenController.Close();
+            await loadGameSplashScreenController.WaitHiding();
         }
         #endregion
     }

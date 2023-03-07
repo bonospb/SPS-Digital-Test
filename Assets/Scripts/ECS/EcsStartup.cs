@@ -86,8 +86,6 @@ namespace FreeTeam.BP.ECS
             if (IsInitialized)
                 return;
 
-            await spawnService.WaitInit();
-
             eventSystems = new EcsSystems(ecsWorld);
             eventSystems
                 .Add(new EventSystem<TimeScaleData>())
@@ -113,6 +111,8 @@ namespace FreeTeam.BP.ECS
                 .Inject(configurations)
 
                 .Init();
+
+            await spawnService.WaitInit();
         }
         #endregion
     }

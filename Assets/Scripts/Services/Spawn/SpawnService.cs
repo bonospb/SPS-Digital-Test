@@ -1,7 +1,6 @@
 ﻿using FreeTeam.BP.Configuration;
 using FreeTeam.BP.Data.Constants;
 using FreeTeam.BP.ECS.Components;
-using FreeTeam.BP.Services.App;
 using FreeTeam.BP.Services.ObjectPool;
 using FreeTeam.BP.Utils;
 using FreeTeam.BP.Views;
@@ -30,7 +29,7 @@ namespace FreeTeam.BP.Services.Spawn
 
         public SpawnService(
             Configurations configurations,
-            PoolManager poolManager, 
+            PoolManager poolManager,
             IEntityViewFactory entityViewFactory)
         {
             _configurations = configurations;
