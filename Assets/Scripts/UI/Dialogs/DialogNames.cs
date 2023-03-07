@@ -8,6 +8,8 @@
         public const string EXIT_GAME_DIALOG_NAME = "ExitGameDialog/ExitGameDialog";
         public const string DEBUG_DIALOG_NAME = "DebugDialog/DebugDialog";
         public const string LOGGER_DIALOG_NAME = "LoggerDialog/LoggerDialog";
+
+        public const string PAUSE_DIALOG_NAME = "PauseDialog/PauseDialog";
         #endregion
     }
 }
