@@ -32,10 +32,13 @@ namespace FreeTeam.BP.Behaviours.Converters
         {
             var config = configurations.Arms[view.ConfigId];
 
+            var armConfigRefPool = world.GetPool<ConfigRef>();
+            ref var armConfigRef = ref armConfigRefPool.Add(entity);
+            armConfigRef.Config = config;
+
             var weaponDataPool = world.GetPool<WeaponData>();
             ref var weaponData = ref weaponDataPool.Add(entity);
-            weaponData.RotationSpeed = config.RotationSpeed;
-            weaponData.Cooldown = config.Cooldown;
+            weaponData.CooldownTimer = 0f;
 
             var transformRefPool = world.GetPool<TransformRef>();
             ref var transformRef = ref transformRefPool.Add(entity);

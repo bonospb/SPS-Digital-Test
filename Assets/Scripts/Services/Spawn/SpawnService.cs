@@ -76,7 +76,7 @@ namespace FreeTeam.BP.Services.Spawn
                 .Where(x => x.Key is IArmPlaceEntityView)
                 .Select(x => x.Value);
 
-            var armId = config.AvailableArms?.FirstOrDefault();
+            var armId = config.Arm;
             if (!string.IsNullOrEmpty(armId))
             {
                 var armPlaceDataPool = world.GetPool<ArmPlaceData>();
@@ -136,7 +136,7 @@ namespace FreeTeam.BP.Services.Spawn
 
             var armsIds = _configurations.Avatars.Values
                 .Where(x => levelVehiclesIds.Contains(x.Id))
-                .SelectMany(x => x.AvailableArms)
+                .Select(x => x.Arm)
                 .Distinct();
             var armsPrefabsPaths = _configurations.Arms.Values
                 .Where(x => armsIds.Contains(x.Id))

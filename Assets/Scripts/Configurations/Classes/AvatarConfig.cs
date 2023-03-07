@@ -7,7 +7,7 @@
 
         public string PrefabPath { get; private set; }
 
-        public string[] AvailableArms { get; private set; }
+        public string Arm { get; private set; }
 
         public int Health { get; private set; }
         #endregion

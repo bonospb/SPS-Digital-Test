@@ -4,11 +4,7 @@ namespace FreeTeam.BP.ECS.Components
 {
     public struct WeaponData
     {
-        public float RotationSpeed;
-
-        public float Cooldown;
-
-        public float Timer;
+        public float CooldownTimer;
 
         public EcsPackedEntity[] EffectsEntities;
     }

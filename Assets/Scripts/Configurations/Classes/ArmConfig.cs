@@ -10,9 +10,6 @@
 
         public string PrefabPath { get; private set; }
 
-        public float Cooldown { get; private set; }
-        public float RotationSpeed { get; private set; }
-
         public string Ability { get; private set; }
         #endregion
     }
