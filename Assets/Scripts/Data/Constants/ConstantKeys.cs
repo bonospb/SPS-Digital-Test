@@ -13,5 +13,8 @@
         public const string SPAWN_COOLDOWN = "spawn_cooldown";
 
         public const string BULLET_TIME_SCALE = "bullet_time_scale";
+
+        public const string PROFILE_SAVE_DELAY = "profile_save_delay";
+        public const string PROFILE_SAVE_REQUEST_AMOUNT = "profile_save_request_amount";
     }
 }

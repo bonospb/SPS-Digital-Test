@@ -2,6 +2,7 @@
 {
     public enum GameStateTypes
     {
+        Init,
         Stoped,
         Played,
         Paused,
