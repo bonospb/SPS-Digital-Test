@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 77059390}
   - component: {fileID: 77059392}
   - component: {fileID: 77059391}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Dialogs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,8 +479,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.29791105, y: 0.36224207, z: -0.12339877, w: 0.87452984}
+  m_LocalPosition: {x: -35.5, y: 18.1, z: 32.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -790,7 +790,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 539607027}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -826,7 +826,7 @@ GameObject:
   - component: {fileID: 637689078}
   - component: {fileID: 637689080}
   - component: {fileID: 637689079}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Screens
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -884,7 +884,7 @@ GameObject:
   - component: {fileID: 726955663}
   - component: {fileID: 726955665}
   - component: {fileID: 726955664}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: WorldSpaceCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -984,7 +984,7 @@ GameObject:
   - component: {fileID: 787130025}
   - component: {fileID: 787130024}
   - component: {fileID: 787130026}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ScreenSpaceCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1306,7 +1306,7 @@ GameObject:
   - component: {fileID: 1819375379}
   - component: {fileID: 1819375381}
   - component: {fileID: 1819375380}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SplashScreens
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1363,7 +1363,7 @@ GameObject:
   - component: {fileID: 1983238317}
   - component: {fileID: 1983238319}
   - component: {fileID: 1983238318}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -102,7 +102,7 @@ namespace FreeTeam.BP.Installers
 
         private Configurations LoadConfigurations()
         {
-            var op = Addressables.LoadAssetAsync<TextAsset>(@"Configs/config");
+            var op = Addressables.LoadAssetAsync<TextAsset>(@"Configs/config.txt");
             TextAsset ta = op.WaitForCompletion();
             var json = ta.text;
 
