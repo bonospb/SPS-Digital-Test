@@ -74,7 +74,7 @@ namespace FreeTeam.BP.Editor.Tools
             AssetDatabase.Refresh();
         }
 
-        [MenuItem("Tools/Config/Encrypt configuration and paste into project", false, 102)]
+        [MenuItem("Tools/Config/Validate configuration and paste into project", false, 102)]
         public static void EncryptConfigurationAndPasteInfoResFolder()
         {
             var path = EditorUtility.OpenFilePanel("Open unencrypted config file...", "Assets", "json");
