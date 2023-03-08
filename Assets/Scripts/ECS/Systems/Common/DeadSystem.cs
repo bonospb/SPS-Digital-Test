@@ -32,7 +32,7 @@ namespace FreeTeam.BP.ECS.Systems
                     }
                 }
 
-                deadData.Timer -= Time.fixedDeltaTime;
+                deadData.Timer -= Time.deltaTime;
             }
         }
         #endregion

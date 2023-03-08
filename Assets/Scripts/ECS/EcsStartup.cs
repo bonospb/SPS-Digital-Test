@@ -9,6 +9,7 @@ using FreeTeam.BP.Services.Spawn;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using Leopotam.EcsLite.EventSystem;
+using Leopotam.EcsLite.ExtendedSystems;
 using UnityEngine;
 using Zenject;
 
@@ -66,10 +67,10 @@ namespace FreeTeam.BP.ECS
         #region Public methods
         [Inject]
         public void Construct(
-            EcsWorld world, 
+            EcsWorld world,
             Configurations config,
             SpawnService spawn,
-            EffectsService effects, 
+            EffectsService effects,
             WorldSpaceCanvasService worldSpaceCanvas)
         {
             ecsWorld = world;
@@ -86,6 +87,8 @@ namespace FreeTeam.BP.ECS
             if (IsInitialized)
                 return;
 
+            //--------------------------------------------//
+
             eventSystems = new EcsSystems(ecsWorld);
             eventSystems
                 .Add(new EventSystem<TimeScaleData>())
@@ -99,11 +102,12 @@ namespace FreeTeam.BP.ECS
 
                 .Init();
 
+            //--------------------------------------------//
+
             initSystems = new EcsSystems(ecsWorld);
             initSystems
                 .Add(new MainGameInitSystem())
                 .Add(new GameStateSystem())
-                .Add(new ProfileSystem())
                 .Add(new TimeScaleSystem())
                 .Add(new CameraInitSystem())
                 .Add(new HealthCheckerSystem())
@@ -111,6 +115,43 @@ namespace FreeTeam.BP.ECS
                 .Inject(configurations)
 
                 .Init();
+
+            //--------------------------------------------//
+
+            fixedUpdateSystem = new EcsSystems(ecsWorld);
+            fixedUpdateSystem
+
+                .Inject(configurations)
+                .Inject(effectsService)
+
+                .Init();
+
+            //--------------------------------------------//
+
+            updateSystems = new EcsSystems(ecsWorld);
+            updateSystems
+                .Add(new ProfileSystem())
+                .Add(new DeadSystem())
+                .Add(new ApplyDamageSystem())
+                .Add(new ApplyHealSystem())
+                .Add(new DestroyEntitySystem())
+
+#if UNITY_EDITOR
+                .Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem())
+#endif
+
+                .DelHere<DamageData>()
+                .DelHere<HealData>()
+                .DelHere<HitData>()
+
+                .Inject(configurations)
+                .Inject(spawnService)
+                .Inject(effectsService)
+                .Inject(worldSpaceCanvasService)
+
+                .Init();
+
+            //--------------------------------------------//
 
             await spawnService.WaitInit();
         }

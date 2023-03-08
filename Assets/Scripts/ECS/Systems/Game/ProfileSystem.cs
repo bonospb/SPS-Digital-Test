@@ -16,8 +16,7 @@ namespace Assets.Scripts.ECS.Systems.Game
         IEcsPreInitSystem,
         IEcsInitSystem,
         IEcsDestroySystem,
-        IEcsRunSystem,
-        EventSystem<ProfileData>.IComponentChangedListener
+        IEcsRunSystem
     {
         #region Inject
         private readonly EcsWorldInject world = default;
@@ -42,8 +41,6 @@ namespace Assets.Scripts.ECS.Systems.Game
 
         public void Init(IEcsSystems systems)
         {
-            world.Value.AddChangedListener(this);
-            
             ref var profileData = ref world.Value.AddUnique<ProfileData>();
             profileData.Value = LoadProfileData();
         }
@@ -51,7 +48,6 @@ namespace Assets.Scripts.ECS.Systems.Game
         public void Destroy(IEcsSystems systems)
         {
             world.Value.DelUnique<ProfileData>();
-            world.Value.RemoveChangedListener(this);
         }
 
         public void Run(IEcsSystems systems)
@@ -69,14 +65,6 @@ namespace Assets.Scripts.ECS.Systems.Game
             }
 
             saveTimer += Time.unscaledDeltaTime;
-        }
-
-        public void OnComponentChanged(EcsWorld world, int entity, ProfileData? data, EntityChangeTypes changeType)
-        {
-            if (changeType.HasFlag(EntityChangeTypes.Removed))
-                return;
-
-            Debug.Log($"E{entity:D8}:[{changeType}]->{data?.GetType().Name}->{data?.Value}");
         }
         #endregion
 
