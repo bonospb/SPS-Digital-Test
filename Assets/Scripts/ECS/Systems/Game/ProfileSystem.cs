@@ -55,11 +55,11 @@ namespace Assets.Scripts.ECS.Systems.Game
             ref var profileData = ref world.Value.GetUnique<ProfileData>();
             if (profileData.Value != null && profileData.Value.IsDirty)
             {
-                if (saveTimer >= saveDelay || saveRequestCounter >= saveRequestAmount)
+                if (saveTimer <= 0 || saveRequestCounter >= saveRequestAmount)
                 {
                     SaveProfileData(profileData.Value);
 
-                    saveTimer = 0;
+                    saveTimer = saveDelay;
                     saveRequestCounter = 0;
                 }
             }
