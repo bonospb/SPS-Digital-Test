@@ -2,8 +2,6 @@
 {
     public struct LevelData
     {
-        public string Id;
-
-        public int Money;
+        public string LevelId;
     }
 }
