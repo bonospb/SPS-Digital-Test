@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace FreeTeam.BP.UI.Dialogs
 {
-    [RequireComponent(typeof(CanvasGroup), typeof(Animator))]
+    [RequireComponent(typeof(CanvasGroup))]
     public abstract class DialogController : UIController, IUIData, IUIResult
     {
         #region Constants
