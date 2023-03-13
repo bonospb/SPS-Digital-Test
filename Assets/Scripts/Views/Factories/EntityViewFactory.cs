@@ -10,15 +10,14 @@ namespace FreeTeam.BP.Views
     public class EntityViewFactory : IEntityViewFactory
     {
         #region Implementations
-        public Dictionary<IEntityView, int> InitEntity(EcsWorld world, GameObject prefab, IConfig config = default)
+        public Dictionary<IEntityView, int> InitEntity(EcsWorld world, GameObject parentGO, IConfig config = default)
         {
-            var allGO = prefab.GetComponentsInChildren<Transform>().Select(x => x.gameObject);
+            var allGO = parentGO.GetComponentsInChildren<Transform>().Select(x => x.gameObject);
             var entities = new Dictionary<IEntityView, int>();
 
             foreach (var go in allGO)
             {
                 var viewConverters = go.GetComponents<IViewConverter>();
-
                 if (viewConverters.Length <= 0)
                     continue;
 
