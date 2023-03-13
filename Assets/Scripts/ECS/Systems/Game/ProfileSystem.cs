@@ -5,7 +5,6 @@ using FreeTeam.BP.ECS.Components;
 using FreeTeam.BP.Extensions;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
-using Leopotam.EcsLite.EventSystem;
 using System;
 using System.IO;
 using UnityEngine;
@@ -47,6 +46,8 @@ namespace Assets.Scripts.ECS.Systems.Game
 
         public void Destroy(IEcsSystems systems)
         {
+            ref var profileData = ref world.Value.GetUnique<ProfileData>();
+            SaveProfileData(profileData.Value);
             world.Value.DelUnique<ProfileData>();
         }
 

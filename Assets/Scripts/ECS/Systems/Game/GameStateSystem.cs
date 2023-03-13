@@ -1,4 +1,5 @@
 ﻿using FreeTeam.BP.Common;
+using FreeTeam.BP.Configuration;
 using FreeTeam.BP.ECS.Components;
 using FreeTeam.BP.ECS.Systems.FSM;
 using FreeTeam.BP.FSM;
@@ -19,6 +20,8 @@ namespace FreeTeam.BP.ECS.Systems
     {
         #region Inject
         private readonly EcsWorldInject world = default;
+
+        private readonly EcsCustomInject<Configurations> config = default;
         #endregion
 
         #region Private
@@ -28,7 +31,7 @@ namespace FreeTeam.BP.ECS.Systems
         #region Implementation
         public void PreInit(IEcsSystems systems)
         {
-            states.Add(GameStateTypes.Init, new InitState(this, world.Value));
+            states.Add(GameStateTypes.Init, new InitState(this, world.Value, config.Value));
             states.Add(GameStateTypes.Stoped, new StopedState(this, world.Value));
             states.Add(GameStateTypes.Played, new PlayedState(this, world.Value));
             states.Add(GameStateTypes.Paused, new PausedState(this, world.Value));

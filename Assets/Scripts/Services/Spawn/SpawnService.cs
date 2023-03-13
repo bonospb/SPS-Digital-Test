@@ -20,9 +20,9 @@ namespace FreeTeam.BP.Services.Spawn
         #endregion
 
         #region Private
-        private Configurations _configurations = null;
-        private PoolManager _poolManager = null;
-        private IEntityViewFactory _entityViewFactory = null;
+        private Configurations configurations = null;
+        private PoolManager poolManager = null;
+        private IEntityViewFactory entityViewFactory = null;
 
         private readonly Dictionary<string, GameObject> levelPrefabs = new Dictionary<string, GameObject>();
         #endregion
@@ -32,9 +32,9 @@ namespace FreeTeam.BP.Services.Spawn
             PoolManager poolManager,
             IEntityViewFactory entityViewFactory)
         {
-            _configurations = configurations;
-            _poolManager = poolManager;
-            _entityViewFactory = entityViewFactory;
+            this.configurations = configurations;
+            this.poolManager = poolManager;
+            this.entityViewFactory = entityViewFactory;
         }
 
         #region Implementation
@@ -48,11 +48,11 @@ namespace FreeTeam.BP.Services.Spawn
             if (!IsInitialized)
                 throw new System.Exception("SpawnService not initialized!");
 
-            var cameraPrefabPath = _configurations.GetConstantString(ConstantKeys.DEFAULT_CAMERA_PREFAB_PATH);
+            var cameraPrefabPath = configurations.GetConstantString(ConstantKeys.DEFAULT_CAMERA_PREFAB_PATH);
             var prefab = levelPrefabs[cameraPrefabPath];
 
-            var cameraGO = _poolManager.Spawn(prefab);
-            _entityViewFactory.InitEntity(world, cameraGO);
+            var cameraGO = poolManager.Spawn(prefab);
+            entityViewFactory.InitEntity(world, cameraGO);
         }
 
         public void SpawnCharacter(
@@ -67,8 +67,8 @@ namespace FreeTeam.BP.Services.Spawn
 
             var vehiclePrefab = levelPrefabs[config.PrefabPath];
 
-            var vehicleGO = _poolManager.Spawn(vehiclePrefab, position, rotation);
-            var allEntities = _entityViewFactory.InitEntity(world, vehicleGO, config);
+            var vehicleGO = poolManager.Spawn(vehiclePrefab, position, rotation);
+            var allEntities = entityViewFactory.InitEntity(world, vehicleGO, config);
 
             var allArmPlaceEntities = allEntities
                 .Where(x => x.Key is IArmPlaceEntityView)
@@ -81,7 +81,7 @@ namespace FreeTeam.BP.Services.Spawn
                 var armPlaceTransformRefPool = world.GetPool<TransformRef>();
                 var playerControlPool = world.GetPool<PlayerControl>();
 
-                var armConfig = _configurations.Arms[armId];
+                var armConfig = configurations.Arms[armId];
                 var armPrefab = levelPrefabs[armConfig.PrefabPath];
 
                 foreach (var playerArmPlaceEntity in allArmPlaceEntities)
@@ -89,8 +89,8 @@ namespace FreeTeam.BP.Services.Spawn
                     ref var armPlaceData = ref armPlaceDataPool.Get(playerArmPlaceEntity);
                     ref var transformRef = ref armPlaceTransformRefPool.Get(playerArmPlaceEntity);
 
-                    var armGO = _poolManager.Spawn(armPrefab, transformRef.Transform);
-                    var armEntity = _entityViewFactory.InitEntity(world, armGO, armConfig).First().Value;
+                    var armGO = poolManager.Spawn(armPrefab, transformRef.Transform);
+                    var armEntity = entityViewFactory.InitEntity(world, armGO, armConfig).First().Value;
 
                     if (isPlayer)
                         playerControlPool.Add(armEntity);
@@ -107,10 +107,10 @@ namespace FreeTeam.BP.Services.Spawn
         #region Private methods
         private async void PreloadPrefabs(LevelConfig levelConfig)
         {
-            var cameraPrefabPath = _configurations.GetConstantString(ConstantKeys.DEFAULT_CAMERA_PREFAB_PATH);
+            var cameraPrefabPath = configurations.GetConstantString(ConstantKeys.DEFAULT_CAMERA_PREFAB_PATH);
 
-            var playerAvatarId = _configurations.GetConstantString(ConstantKeys.DEFAULT_PLAYER_AVATAR);
-            var playerAvatarConfig = _configurations.Avatars[playerAvatarId];
+            var playerAvatarId = configurations.GetConstantString(ConstantKeys.DEFAULT_PLAYER_AVATAR);
+            var playerAvatarConfig = configurations.Avatars[playerAvatarId];
             var playerPrefabPath = playerAvatarConfig.PrefabPath;
 
             var levelVehiclesIds = new List<string>
@@ -128,18 +128,18 @@ namespace FreeTeam.BP.Services.Spawn
                 .Select(x => x.Id);
             levelVehiclesIds.AddRange(enemiesVehiclesIds);
 
-            var enemiesVehiclesConfigs = _configurations.Avatars.Values
+            var enemiesVehiclesConfigs = configurations.Avatars.Values
                 .Where(x => enemiesVehiclesIds.Contains(x.Id));
 
             var enemiesVehiclesPrefabsPath = enemiesVehiclesConfigs
-                .Select(x => _configurations.Avatars[x.Id].PrefabPath);
+                .Select(x => configurations.Avatars[x.Id].PrefabPath);
             levelPrefabsPaths.AddRange(enemiesVehiclesPrefabsPath);
 
-            var armsIds = _configurations.Avatars.Values
+            var armsIds = configurations.Avatars.Values
                 .Where(x => levelVehiclesIds.Contains(x.Id))
                 .Select(x => x.Arm)
                 .Distinct();
-            var armsPrefabsPaths = _configurations.Arms.Values
+            var armsPrefabsPaths = configurations.Arms.Values
                 .Where(x => armsIds.Contains(x.Id))
                 .Select(x => x.PrefabPath);
             levelPrefabsPaths.AddRange(armsPrefabsPaths);
@@ -154,7 +154,7 @@ namespace FreeTeam.BP.Services.Spawn
                 var prefab = operation.Result;
 
                 levelPrefabs.Add(path, prefab);
-                _poolManager.Warm(prefab);
+                poolManager.Warm(prefab);
             }
 
             IsInitialized = true;

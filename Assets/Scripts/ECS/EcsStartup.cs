@@ -2,10 +2,10 @@
 using FreeTeam.BP.Configuration;
 using FreeTeam.BP.ECS.Components;
 using FreeTeam.BP.ECS.Systems;
-using FreeTeam.BP.Services.App;
 using FreeTeam.BP.Services.Canvas;
 using FreeTeam.BP.Services.Effects;
 using FreeTeam.BP.Services.Spawn;
+using FreeTeam.BP.Views;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using Leopotam.EcsLite.EventSystem;
@@ -29,10 +29,11 @@ namespace FreeTeam.BP.ECS
         private EcsSystems fixedUpdateSystem = null;
         private EcsSystems eventSystems = null;
 
-        private EffectsService effectsService = null;
-        private WorldSpaceCanvasService worldSpaceCanvasService = null;
         private Configurations configurations = null;
+        private EffectsService effectsService = null;
         private SpawnService spawnService = null;
+        private WorldSpaceCanvasService worldSpaceCanvasService = null;
+        private IEntityViewFactory entityViewFactory = null;
         #endregion
 
         #region Unity methods
@@ -67,17 +68,19 @@ namespace FreeTeam.BP.ECS
         #region Public methods
         [Inject]
         public void Construct(
-            EcsWorld world,
-            Configurations config,
-            SpawnService spawn,
-            EffectsService effects,
-            WorldSpaceCanvasService worldSpaceCanvas)
+            EcsWorld ecsWorld,
+            Configurations configurations,
+            SpawnService spawnService,
+            EffectsService effectsService,
+            WorldSpaceCanvasService worldSpaceCanvasService,
+            IEntityViewFactory entityViewFactory)
         {
-            ecsWorld = world;
-            configurations = config;
-            spawnService = spawn;
-            effectsService = effects;
-            worldSpaceCanvasService = worldSpaceCanvas;
+            this.ecsWorld = ecsWorld;
+            this.configurations = configurations;
+            this.spawnService = spawnService;
+            this.effectsService = effectsService;
+            this.worldSpaceCanvasService = worldSpaceCanvasService;
+            this.entityViewFactory = entityViewFactory;
 
             InitSystems();
         }
@@ -96,6 +99,7 @@ namespace FreeTeam.BP.ECS
                 .Add(new EventSystem<ProfileData>())
                 .Add(new EventSystem<HealthData>())
                 .Add(new EventSystem<DeadData>())
+                .Add(new EventSystem<LoadLevelEvent>())
                 .Add(new EventSystem<DestroyEntityEvent>())
 
                 .Inject()
@@ -131,6 +135,7 @@ namespace FreeTeam.BP.ECS
             updateSystems = new EcsSystems(ecsWorld);
             updateSystems
                 .Add(new ProfileSystem())
+                .Add(new LoadLevelSystem())
                 .Add(new DeadSystem())
                 .Add(new ApplyDamageSystem())
                 .Add(new ApplyHealSystem())
@@ -143,6 +148,8 @@ namespace FreeTeam.BP.ECS
                 .DelHere<DamageData>()
                 .DelHere<HealData>()
                 .DelHere<HitData>()
+                .DelHere<LoadLevelEvent>()
+                .DelHere<DestroyEntityEvent>()
 
                 .Inject(configurations)
                 .Inject(spawnService)
